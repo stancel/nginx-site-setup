@@ -1,0 +1,107 @@
+---
+# tasks file for nginx-site-setup
+
+- name: "Set permissions for the web root - {{ nginx_site_setup_web_home }}"
+  file: 
+    path: "{{ nginx_site_setup_web_home }}"
+    state: directory 
+    owner: root 
+    group: root 
+    mode: 0755
+
+- name: "Create directories for each site"
+  file: 
+    path: "{{ nginx_site_setup_web_home }}/{{ item.name }}" 
+    state: directory 
+    owner: root 
+    group: root
+  with_items: '{{ nginx_site_setup_sites_to_set_up }}'
+
+- name: "Copy nginx configuration (with HTTPS enabled)"
+  template: 
+    src: nginx_app_config_https 
+    dest: /etc/nginx/sites-available/{{ item.name }} 
+    owner: root 
+    group: root
+  with_items: '{{ nginx_site_setup_sites_to_set_up }}'
+  when: item.https
+
+- name: "Copy nginx configuration (without HTTPS enabled)"
+  template: 
+    src: nginx_app_config 
+    dest: /etc/nginx/sites-available/{{ item.name }} 
+    owner: root 
+    group: root
+  with_items: '{{ nginx_site_setup_sites_to_set_up }}'
+  when: item.https == false
+
+- name: "Look for local custom_config"
+  local_action: stat path=roles/nginx/templates/custom_config/{{ item.name }}
+  register: has_custom_config
+  with_items: '{{ nginx_site_setup_sites_to_set_up }}'
+
+- name: "Copy nginx custom config to remote"
+  template: 
+    src: roles/nginx/templates/custom_config/{{ item.item.name }} 
+    dest: /etc/nginx/sites-available/{{ item.item.name }} 
+    owner: root 
+    group: root
+  with_items: '{{ has_custom_config.results }}'
+  when: item.stat.exists == true
+
+- name: "Enable site in NginX - symlink to sites-enabled"
+  file: 
+    src: /etc/nginx/sites-available/{{ item.name }} 
+    dest: /etc/nginx/sites-enabled/{{ item.name }} 
+    owner: root 
+    group: root 
+    state: link
+  with_items: '{{ nginx_site_setup_sites_to_set_up }}'
+  notify: restart nginx
+
+- name: "Create www directory and set {{ nginx_site_setup_web_group }} as default group for all new directories"
+  file: 
+    path: "{{ nginx_site_setup_web_home }}/{{ item.name }}/www"
+    state: directory 
+    owner: "{{ item.name }}" 
+    group: "{{ nginx_site_setup_web_group }}" 
+    mode: g+s
+  with_items: '{{ nginx_site_setup_sites_to_set_up }}'
+
+- name: "Ensure directories are 0755"
+  command: find {{ nginx_site_setup_web_home }}/{{ item.name }}/www/ -type d -exec chmod -c 0755 {} \;
+  register: chmod_result
+  changed_when: "chmod_result.stdout != \"\""
+  with_items: '{{ nginx_site_setup_sites_to_set_up }}'
+
+- name: "Ensure files are 0644"
+  command: find {{ nginx_site_setup_web_home }}/{{ item.name }}/www/ -type f -exec chmod -c 0644 {} \;
+  register: chmod_result
+  changed_when: "chmod_result.stdout != \"\""
+  with_items: '{{ nginx_site_setup_sites_to_set_up }}'
+
+- name: "Set user and group ownership for all existing files and directories"
+  command: chown -R {{ item.name }}:{{ nginx_site_setup_web_group }} {{ nginx_site_setup_web_home }}/{{ item.name }}/www
+  register: chmod_result
+  changed_when: "chmod_result.stdout != \"\""
+  with_items: '{{ nginx_site_setup_sites_to_set_up }}'
+
+- name: "Ensure newly created directories and files have a group of {{ nginx_site_setup_web_group }}"
+  command: find {{ nginx_site_setup_web_home }}/{{ item.name }}/www/ -type d -exec chmod g+s {} \;
+  register: chmod_result
+  changed_when: "chmod_result.stdout != \"\""
+  with_items: '{{ nginx_site_setup_sites_to_set_up }}' 
+
+- name: "Ensure NginX service is up"
+  service:
+    name: nginx 
+    state: started 
+    enabled: yes  
+
+- name: "Restart NginX to make sure new configuration is active"
+  service:
+    name: nginx 
+    state: restarted 
+    enabled: yes  
+  
+

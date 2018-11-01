@@ -1,0 +1,29 @@
+galaxy_info:
+  author: "Brad Stancel"
+  description: "Sets up one or more new virtual hosts on an NginX webserver"
+  company: YourOnlineDept.com
+
+  license: GPLv3
+
+  min_ansible_version: 2.4
+
+  github_branch: master
+  
+  platforms:
+  - name: Ubuntu
+    versions:
+    - trusty
+    - xenial
+  - name: Debian
+    versions:
+    - wheezy
+    - jessie
+    - stretch
+
+  galaxy_tags: 
+    - nginx
+    - vhost
+
+
+dependencies: []
+
