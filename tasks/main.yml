@@ -57,7 +57,7 @@
     group: root 
     state: link
   with_items: '{{ nginx_site_setup_sites_to_set_up }}'
-  notify: restart nginx
+  notify: Restart nginx
 
 - name: "Create www directory and set {{ nginx_site_setup_web_group }} as default group for all new directories"
   file: 
