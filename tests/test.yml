@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - nginx-site-setup
+    - stancel.nginx_site_setup
