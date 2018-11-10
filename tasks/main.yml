@@ -64,7 +64,7 @@
 
     - name: "Create www directory and set {{ nginx_site_setup_web_group }} as default group for all new directories"
       file: 
-        path: "{{ nginx_site_setup_web_home }}/{{ item.name }}/www"
+        path: "{{ nginx_site_setup_web_home }}/{{ item.name }}/{{ nginx_site_setup_site_subfolder_used_to_serve_files }}"
         state: directory 
         owner: "{{ item.name }}" 
         group: "{{ nginx_site_setup_web_group }}" 
@@ -79,7 +79,7 @@
 
     - name: "Create www directory and set {{ nginx_site_setup_web_group }} as default group for all new directories"
       file: 
-        path: "{{ nginx_site_setup_web_home }}/{{ item.name }}/www"
+        path: "{{ nginx_site_setup_web_home }}/{{ item.name }}/{{ nginx_site_setup_site_subfolder_used_to_serve_files }}"
         state: directory 
         owner: "{{ nginx_site_setup_web_user }}" 
         group: "{{ nginx_site_setup_web_group }}" 
@@ -91,25 +91,25 @@
 
 
 - name: "Ensure directories are 0755"
-  command: find {{ nginx_site_setup_web_home }}/{{ item.name }}/www/ -type d -exec chmod -c 0755 {} \;
+  command: find {{ nginx_site_setup_web_home }}/{{ item.name }}/{{ nginx_site_setup_site_subfolder_used_to_serve_files }}/ -type d -exec chmod -c 0755 {} \;
   register: chmod_result
   changed_when: "chmod_result.stdout != \"\""
   with_items: '{{ nginx_site_setup_sites_to_set_up }}'
 
 - name: "Ensure files are 0644"
-  command: find {{ nginx_site_setup_web_home }}/{{ item.name }}/www/ -type f -exec chmod -c 0644 {} \;
+  command: find {{ nginx_site_setup_web_home }}/{{ item.name }}/{{ nginx_site_setup_site_subfolder_used_to_serve_files }}/ -type f -exec chmod -c 0644 {} \;
   register: chmod_result
   changed_when: "chmod_result.stdout != \"\""
   with_items: '{{ nginx_site_setup_sites_to_set_up }}'
 
 #- name: "Set user and group ownership for all existing files and directories"
-#  command: chown -R {{ item.name }}:{{ nginx_site_setup_web_group }} {{ nginx_site_setup_web_home }}/{{ item.name }}/www
+#  command: chown -R {{ item.name }}:{{ nginx_site_setup_web_group }} {{ nginx_site_setup_web_home }}/{{ item.name }}/{{ nginx_site_setup_site_subfolder_used_to_serve_files }}
 #  register: chmod_result
 #  changed_when: "chmod_result.stdout != \"\""
 #  with_items: '{{ nginx_site_setup_sites_to_set_up }}'
 #
 #- name: "Ensure newly created directories and files have a group of {{ nginx_site_setup_web_group }}"
-#  command: find {{ nginx_site_setup_web_home }}/{{ item.name }}/www/ -type d -exec chmod g+s {} \;
+#  command: find {{ nginx_site_setup_web_home }}/{{ item.name }}/{{ nginx_site_setup_site_subfolder_used_to_serve_files }}/ -type d -exec chmod g+s {} \;
 #  register: chmod_result
 #  changed_when: "chmod_result.stdout != \"\""
 #  with_items: '{{ nginx_site_setup_sites_to_set_up }}' 

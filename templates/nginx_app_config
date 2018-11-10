@@ -3,7 +3,7 @@ server {
 
   server_name {{ item.nginx_server_name }};
 
-  root /var/www/{{ item.name }}/www;
+  root /var/www/{{ item.name }}/{{ nginx_site_setup_site_subfolder_used_to_serve_files }};
   try_files /wp-content/cache/supercache/$http_host/$cache_uri/index.html $uri $uri/ /index.php?$args;
   index index.php index.html;
 
@@ -41,7 +41,7 @@ server {
   error_page 500 502 503 504 /50x.html;
 
   location = /50x.html {
-    root /var/www/{{ item.name }}/www;
+    root /var/www/{{ item.name }}/{{ nginx_site_setup_site_subfolder_used_to_serve_files }};
   }
 
   location ~ \.php$ {

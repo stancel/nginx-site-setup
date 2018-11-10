@@ -32,6 +32,11 @@ The document root for the webserver. The default value is "/var/www"
 	nginx_site_setup_web_home: "/var/www"
 ```
 
+The name of the folder created under each website folder that holds the files NginX will serve up in its server block. The default is "www". If this is used with Bedrock WordPress then it should be changed to "web".
+```
+	nginx_site_setup_site_subfolder_used_to_serve_files: "www"
+```
+
 The linux username used by your webserver. The default value is "www-data"
 ```
 	nginx_site_setup_web_user: "www-data"
