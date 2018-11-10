@@ -59,14 +59,36 @@
 #  with_items: '{{ nginx_site_setup_sites_to_set_up }}'
 #  notify: Restart nginx
 
-- name: "Create www directory and set {{ nginx_site_setup_web_group }} as default group for all new directories"
-  file: 
-    path: "{{ nginx_site_setup_web_home }}/{{ item.name }}/www"
-    state: directory 
-    owner: "{{ item.name }}" 
-    group: "{{ nginx_site_setup_web_group }}" 
-    mode: g+s
-  with_items: '{{ nginx_site_setup_sites_to_set_up }}'
+- name: "Install NGINX from the Debian/Ubuntu default OS repository"
+  block:
+
+    - name: "Create www directory and set {{ nginx_site_setup_web_group }} as default group for all new directories"
+      file: 
+        path: "{{ nginx_site_setup_web_home }}/{{ item.name }}/www"
+        state: directory 
+        owner: "{{ item.name }}" 
+        group: "{{ nginx_site_setup_web_group }}" 
+        mode: g+s
+        recurse: yes
+      with_items: '{{ nginx_site_setup_sites_to_set_up }}'
+
+  when: nginx_site_setup_used_on_shared_webserver
+
+- name: "Install NGINX from the Debian/Ubuntu default OS repository"
+  block:
+
+    - name: "Create www directory and set {{ nginx_site_setup_web_group }} as default group for all new directories"
+      file: 
+        path: "{{ nginx_site_setup_web_home }}/{{ item.name }}/www"
+        state: directory 
+        owner: "{{ nginx_site_setup_web_user }}" 
+        group: "{{ nginx_site_setup_web_group }}" 
+        mode: g+s
+        recurse: yes
+      with_items: '{{ nginx_site_setup_sites_to_set_up }}'
+      
+  when: nginx_site_setup_used_on_shared_webserver == false
+
 
 - name: "Ensure directories are 0755"
   command: find {{ nginx_site_setup_web_home }}/{{ item.name }}/www/ -type d -exec chmod -c 0755 {} \;
@@ -80,17 +102,17 @@
   changed_when: "chmod_result.stdout != \"\""
   with_items: '{{ nginx_site_setup_sites_to_set_up }}'
 
-- name: "Set user and group ownership for all existing files and directories"
-  command: chown -R {{ item.name }}:{{ nginx_site_setup_web_group }} {{ nginx_site_setup_web_home }}/{{ item.name }}/www
-  register: chmod_result
-  changed_when: "chmod_result.stdout != \"\""
-  with_items: '{{ nginx_site_setup_sites_to_set_up }}'
-
-- name: "Ensure newly created directories and files have a group of {{ nginx_site_setup_web_group }}"
-  command: find {{ nginx_site_setup_web_home }}/{{ item.name }}/www/ -type d -exec chmod g+s {} \;
-  register: chmod_result
-  changed_when: "chmod_result.stdout != \"\""
-  with_items: '{{ nginx_site_setup_sites_to_set_up }}' 
+#- name: "Set user and group ownership for all existing files and directories"
+#  command: chown -R {{ item.name }}:{{ nginx_site_setup_web_group }} {{ nginx_site_setup_web_home }}/{{ item.name }}/www
+#  register: chmod_result
+#  changed_when: "chmod_result.stdout != \"\""
+#  with_items: '{{ nginx_site_setup_sites_to_set_up }}'
+#
+#- name: "Ensure newly created directories and files have a group of {{ nginx_site_setup_web_group }}"
+#  command: find {{ nginx_site_setup_web_home }}/{{ item.name }}/www/ -type d -exec chmod g+s {} \;
+#  register: chmod_result
+#  changed_when: "chmod_result.stdout != \"\""
+#  with_items: '{{ nginx_site_setup_sites_to_set_up }}' 
 
 - name: "Ensure NginX service is up"
   service:

@@ -26,3 +26,7 @@ nginx_site_setup_sites_to_set_up:
 
 # Will you be passing a list of sites to setup?  (not yet used)
 #nginx_site_setup_use_list: true 
+
+# Is this being run on a shared webserver?
+#nginx_site_setup_used_on_shared_webserver: false
+
