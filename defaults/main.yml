@@ -2,7 +2,11 @@
 # defaults file for nginx-site-setup
 
 # The NginX client max body size
-nginx_site_setup_nginx_server_client_max_body_size: 10m
+# Set the maximum allowed size of client request body. This should be set
+# to the value of files sizes you wish to upload to the WordPress Media Library.
+# You may also need to change the values `upload_max_filesize` and `post_max_size` within
+# your php.ini for the changes to apply.
+nginx_site_setup_nginx_server_client_max_body_size: 64m
 
 # The document root for the webserver
 nginx_site_setup_web_home: "/var/www"
