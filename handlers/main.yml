@@ -1,9 +1,7 @@
 ---
 # handlers file for nginx-site-setup
-
 - name: "Restart nginx"
   service:
     name: nginx 
     state: restarted 
     enabled: yes  
-

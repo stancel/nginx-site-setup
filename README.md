@@ -85,5 +85,3 @@ Author Information
 ------------------
 
 [Brad Stance](https://github.com/stancel)
-
-

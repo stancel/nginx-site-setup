@@ -1,6 +1,5 @@
 ---
 # tasks file for nginx-site-setup
-
 - name: "Set permissions for the web root - {{ nginx_site_setup_web_home }}"
   file: 
     path: "{{ nginx_site_setup_web_home }}"
@@ -33,7 +32,7 @@
     owner: root 
     group: root
   with_items: '{{ nginx_site_setup_sites_to_set_up }}'
-  when: item.https == false
+  when: not item.https
 
 - name: "Look for local custom_config"
   local_action: stat path=roles/nginx/templates/custom_config/{{ item.name }}
@@ -47,17 +46,7 @@
     owner: root 
     group: root
   with_items: '{{ has_custom_config.results }}'
-  when: item.stat.exists == true
-
-#- name: "Enable site in NginX - symlink to sites-enabled"
-#  file: 
-#    src: /etc/nginx/sites-available/{{ item.name }} 
-#    dest: /etc/nginx/sites-enabled/{{ item.name }} 
-#    owner: root 
-#    group: root 
-#    state: link
-#  with_items: '{{ nginx_site_setup_sites_to_set_up }}'
-#  notify: Restart nginx
+  when: item.stat.exists
 
 - name: "Setup web on a shared webserver"
   block:
@@ -87,8 +76,7 @@
         recurse: yes
       with_items: '{{ nginx_site_setup_sites_to_set_up }}'
       
-  when: nginx_site_setup_used_on_shared_webserver == false
-
+  when: not nginx_site_setup_used_on_shared_webserver
 
 - name: "Ensure directories are 0755"
   command: find {{ nginx_site_setup_web_home }}/{{ item.name }}/{{ nginx_site_setup_site_subfolder_used_to_serve_files }}/ -type d -exec chmod -c 0755 {} \;
@@ -126,4 +114,3 @@
     state: restarted 
     enabled: yes  
   
-

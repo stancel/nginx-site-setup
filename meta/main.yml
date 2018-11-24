@@ -24,6 +24,4 @@ galaxy_info:
     - nginx
     - vhost
 
-
 dependencies: []
-
