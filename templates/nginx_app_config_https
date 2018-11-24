@@ -23,7 +23,7 @@ server {
   listen [::]:443 ssl http2;
   listen 443 ssl http2;
 
-  server_name {{ item.nginx_server_name }};
+  server_name {{ item.url }} www.{{ item.url }};
 
   root /var/www/{{ item.name }}/{{ nginx_site_setup_site_subfolder_used_to_serve_files }};
   try_files /wp-content/cache/supercache/$http_host/$cache_uri/index.html $uri $uri/ /index.php?$args;
