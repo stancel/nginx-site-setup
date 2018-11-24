@@ -59,7 +59,7 @@
 #  with_items: '{{ nginx_site_setup_sites_to_set_up }}'
 #  notify: Restart nginx
 
-- name: "Install NGINX from the Debian/Ubuntu default OS repository"
+- name: "Setup web on a shared webserver"
   block:
 
     - name: "Create www directory and set {{ nginx_site_setup_web_group }} as default group for all new directories"
@@ -74,7 +74,7 @@
 
   when: nginx_site_setup_used_on_shared_webserver
 
-- name: "Install NGINX from the Debian/Ubuntu default OS repository"
+- name: "Setup web directory on VPS or non-shared webserver"
   block:
 
     - name: "Create www directory and set {{ nginx_site_setup_web_group }} as default group for all new directories"
