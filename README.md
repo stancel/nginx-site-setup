@@ -17,7 +17,6 @@ Sites to setup and host on the webserver
 	  - {
 		  url: 'mysite.com',
 		  name: 'mysite',
-		  nginx_server_name: 'mysite.comm www.mysite.com',
 		  https: true
 		}
 ```
@@ -72,7 +71,6 @@ or just pass the variables in the playbook
           - {
               url: 'mysite.com',
               name: 'mysite',
-              nginx_server_name: 'mysite.comm www.mysite.com',
               https: true
 		    }
 	  roles:

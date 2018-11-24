@@ -6,7 +6,6 @@ nginx_site_setup_sites_to_set_up:
   - {
       url: 'mysite.com',
       name: 'mysite',
-      nginx_server_name: 'mysite.comm www.mysite.com',
       https: true
     }
 
