@@ -25,3 +25,4 @@ nginx_site_setup_web_group: "www-data"
 
 # Is this being run on a shared webserver?
 nginx_site_setup_used_on_shared_webserver: false
+
