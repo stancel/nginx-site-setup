@@ -37,6 +37,8 @@ nginx_site_setup_sites_to_set_up:
 #nginx_site_setup_restrict_site_to_certain_ip_addresses: false
 
 # The rules are processed in sequence, from top to bottom
-#nginx_site_setup_ip_addresses_or_cidr_ranges_to_allow_or_deny:
-#  - allow 1.2.3.4;
-#  - deny all;
+#nginx_site_setup_ip_addresses_or_cidr_ranges_to_allow_or_deny: [
+#  "allow 1.2.3.4;",
+#  "allow 192.168.1.0/24",
+#  "deny all;"
+#]

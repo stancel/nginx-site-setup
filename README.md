@@ -67,9 +67,11 @@ Should the site only be viewable on an intranet, certain IP addresses, or block 
 The rules are processed in sequence, from top to bottom.  
 
 ``` 
-	nginx_site_setup_ip_addresses_or_cidr_ranges_to_allow_or_deny:
-  	  - allow 1.2.3.4;
-  	  - deny all; 
+	nginx_site_setup_ip_addresses_or_cidr_ranges_to_allow_or_deny: [
+	  "allow 1.2.3.4;",
+	  "allow 192.168.1.0/24",
+	  "deny all;"
+	]
 ```  
 
 Dependencies
@@ -101,10 +103,12 @@ or just pass the variables in the playbook
               name: 'mysite',
               https: true,
               nginx_site_setup_used_on_shared_webserver: true
-              nginx_site_setup_restrict_site_to_certain_ip_addresses: true
-              nginx_site_setup_ip_addresses_or_cidr_ranges_to_allow_or_deny:
-                - allow 1.2.3.4;
-                - deny all;
+			  nginx_site_setup_restrict_site_to_certain_ip_addresses: true,
+			  nginx_site_setup_ip_addresses_or_cidr_ranges_to_allow_or_deny: [
+				"allow 1.2.3.4;",
+				"allow 192.168.1.0/24",
+				"deny all;"
+			  ]
 		    }
 	  roles:
 	    - stancel.nginx_site_setup

@@ -2,11 +2,11 @@ server {
   listen 80;
 
   # Section to restrict this site to be viewable only by certain IP addresses 
-  {% if nginx_site_setup_restrict_site_to_certain_ip_addresses %} 
-	{% for addresses in nginx_site_setup_ip_addresses_or_cidr_ranges_to_allow_or_deny %}
-    {{ addresses }}
-    {% endfor %}
-  {% endif %}	
+  {% if item.nginx_site_setup_restrict_site_to_certain_ip_addresses %} 
+  {% for addresses in item.nginx_site_setup_ip_addresses_or_cidr_ranges_to_allow_or_deny %}
+  {{ addresses }}
+  {% endfor %}
+  {% endif %}
 
   server_name {{ item.url }} www.{{ item.url }};
 
