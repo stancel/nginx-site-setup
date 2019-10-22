@@ -58,6 +58,20 @@ Whether this role is being run on a shared webserver. If it is run on a shared w
 	nginx_site_setup_used_on_shared_webserver: false
 ```
 
+Should the site only be viewable on an intranet, certain IP addresses, or block any IP addresses? The default is false.
+
+```
+	nginx_site_setup_restrict_site_to_certain_ip_addresses: false
+```
+
+The rules are processed in sequence, from top to bottom.  
+
+``` 
+	nginx_site_setup_ip_addresses_or_cidr_ranges_to_allow_or_deny:
+  	  - allow 1.2.3.4;
+  	  - deny all; 
+```  
+
 Dependencies
 ------------
 
@@ -87,6 +101,10 @@ or just pass the variables in the playbook
               name: 'mysite',
               https: true,
               nginx_site_setup_used_on_shared_webserver: true
+              nginx_site_setup_restrict_site_to_certain_ip_addresses: true
+              nginx_site_setup_ip_addresses_or_cidr_ranges_to_allow_or_deny:
+                - allow 1.2.3.4;
+                - deny all;
 		    }
 	  roles:
 	    - stancel.nginx_site_setup

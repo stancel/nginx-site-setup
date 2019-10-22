@@ -1,6 +1,13 @@
 server {
   listen 80;
 
+  # Section to restrict this site to be viewable only by certain IP addresses 
+  {% if restrict_site_to_certain_ip_addresses %} 
+	{% for addresses in ip_addresses_or_cidr_ranges_to_allow %}
+    {{ addresses }}
+    {% endfor %}
+  {% endif %}	
+
   server_name {{ item.url }} www.{{ item.url }};
 
   root /var/www/{{ item.name }}/{{ nginx_site_setup_site_subfolder_used_to_serve_files }};
