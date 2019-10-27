@@ -51,6 +51,16 @@
 - name: "Setup web on a shared webserver"
   block:
 
+    - name: "Set the correct ownership permissions on the user website directory"
+      file: 
+        path: "{{ nginx_site_setup_web_home }}/{{ item.name }}"
+        state: directory 
+        owner: "{{ item.name }}" 
+        group: "{{ nginx_site_setup_web_group }}" 
+        mode: g+s
+        recurse: yes
+      with_items: '{{ nginx_site_setup_sites_to_set_up }}'
+
     - name: "Create www directory and set {{ nginx_site_setup_web_group }} as default group for all new directories"
       file: 
         path: "{{ nginx_site_setup_web_home }}/{{ item.name }}/{{ item.nginx_site_setup_site_subfolder_used_to_serve_files }}"
@@ -66,11 +76,21 @@
 - name: "Setup web directory on VPS or non-shared webserver"
   block:
 
+    - name: "Set the correct ownership permissions on the user website directory"
+      file: 
+        path: "{{ nginx_site_setup_web_home }}/{{ item.name }}"
+        state: directory 
+        owner: "{{ nginx_site_setup_web_user }}"
+        group: "{{ nginx_site_setup_web_group }}" 
+        mode: g+s
+        recurse: yes
+      with_items: '{{ nginx_site_setup_sites_to_set_up }}'
+
     - name: "Create www directory and set {{ nginx_site_setup_web_group }} as default group for all new directories"
       file: 
         path: "{{ nginx_site_setup_web_home }}/{{ item.name }}/{{ item.nginx_site_setup_site_subfolder_used_to_serve_files }}"
         state: directory 
-        owner: "{{ nginx_site_setup_web_user }}" 
+        owner: "{{ nginx_site_setup_web_user }}"
         group: "{{ nginx_site_setup_web_group }}" 
         mode: g+s
         recurse: yes
@@ -101,3 +121,4 @@
     name: nginx 
     state: restarted 
     enabled: yes  
+  
