@@ -10,7 +10,12 @@ server {
 
   server_name {{ item.url }} www.{{ item.url }};
 
-  root /var/www/{{ item.name }}/{{ nginx_site_setup_site_subfolder_used_to_serve_files }};
+  {% if item.nginx_site_setup_site_subfolder_used_to_serve_files is defined %}
+    root /var/www/{{ item.name }}/{{ item.nginx_site_setup_site_subfolder_used_to_serve_files }};
+  {% else %}
+    root /var/www/{{ item.name }}/{{ nginx_site_setup_site_subfolder_used_to_serve_files }};
+  {% endif %}
+  
   try_files /wp-content/cache/supercache/$http_host/$cache_uri/index.html $uri $uri/ /index.php?$args;
   index index.php index.html;
 

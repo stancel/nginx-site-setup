@@ -18,7 +18,8 @@ Sites to setup and host on the webserver
 	  - {
 		  url: 'mysite.com',
 		  name: 'mysite',
-		  https: true
+		  https: true,
+		  nginx_site_setup_site_subfolder_used_to_serve_files: "current/build/html"
 		}
 ```
 
@@ -102,7 +103,8 @@ or just pass the variables in the playbook
               url: 'mysite.com',
               name: 'mysite',
               https: true,
-              nginx_site_setup_used_on_shared_webserver: true
+              nginx_site_setup_used_on_shared_webserver: true,
+              nginx_site_setup_site_subfolder_used_to_serve_files: "current/build/html",
 			  nginx_site_setup_restrict_site_to_certain_ip_addresses: true,
 			  nginx_site_setup_ip_addresses_or_cidr_ranges_to_allow_or_deny: [
 				"allow 1.2.3.4;",

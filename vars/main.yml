@@ -6,7 +6,8 @@ nginx_site_setup_sites_to_set_up:
   - {
       url: 'mysite.com',
       name: 'mysite',
-      https: true
+      https: true,
+      nginx_site_setup_site_subfolder_used_to_serve_files: "current/build/html"
     }
 
 #####     Optional Variables      #####
