@@ -57,8 +57,7 @@
         state: directory 
         owner: "{{ item.name }}" 
         group: "{{ nginx_site_setup_web_group }}" 
-        mode: g+s
-        recurse: yes
+        mode: 0755
       with_items: '{{ nginx_site_setup_sites_to_set_up }}'
 
     - name: "Create www directory and set {{ nginx_site_setup_web_group }} as default group for all new directories"
@@ -82,8 +81,7 @@
         state: directory 
         owner: "{{ nginx_site_setup_web_user }}"
         group: "{{ nginx_site_setup_web_group }}" 
-        mode: g+s
-        recurse: yes
+        mode: 0755
       with_items: '{{ nginx_site_setup_sites_to_set_up }}'
 
     - name: "Create www directory and set {{ nginx_site_setup_web_group }} as default group for all new directories"
@@ -121,4 +119,3 @@
     name: nginx 
     state: restarted 
     enabled: yes  
-  
