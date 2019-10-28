@@ -24,16 +24,16 @@ server {
   listen 443 ssl http2;
 
   # Section to restrict this site to be viewable only by certain IP addresses 
-  {% if item.nginx_site_setup_restrict_site_to_certain_ip_addresses %} 
-  {% for addresses in item.nginx_site_setup_ip_addresses_or_cidr_ranges_to_allow_or_deny %}
+  {% if item.restrict_site_to_certain_ip_addresses %} 
+  {% for addresses in item.ip_addresses_or_cidr_ranges_to_allow_or_deny %}
   {{ addresses }}
   {% endfor %}
   {% endif %}
 
   server_name {{ item.url }} www.{{ item.url }};
 
-  {% if item.nginx_site_setup_site_subfolder_used_to_serve_files is defined %}
-    root /var/www/{{ item.name }}/{{ item.nginx_site_setup_site_subfolder_used_to_serve_files }};
+  {% if item.site_subfolder_used_to_serve_files is defined %}
+    root /var/www/{{ item.name }}/{{ item.site_subfolder_used_to_serve_files }};
   {% else %}
     root /var/www/{{ item.name }}/{{ nginx_site_setup_site_subfolder_used_to_serve_files }};
   {% endif %}
@@ -101,7 +101,11 @@ server {
   error_page 500 502 503 504 /50x.html;
 
   location = /50x.html {
+  {% if item.site_subfolder_used_to_serve_files is defined %}
+    root /var/www/{{ item.name }}/{{ item.site_subfolder_used_to_serve_files }};
+  {% else %}
     root /var/www/{{ item.name }}/{{ nginx_site_setup_site_subfolder_used_to_serve_files }};
+  {% endif %}
   }
 
   location ~ \.php$ {

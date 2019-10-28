@@ -56,13 +56,13 @@
         path: "{{ nginx_site_setup_web_home }}/{{ item.name }}"
         state: directory 
         owner: "{{ item.name }}" 
-        group: "{{ nginx_site_setup_web_group }}" 
+        group: "{{ nginx_site_setup_web_group }}"
         mode: 0755
       with_items: '{{ nginx_site_setup_sites_to_set_up }}'
 
     - name: "Create www directory and set {{ nginx_site_setup_web_group }} as default group for all new directories"
       file: 
-        path: "{{ nginx_site_setup_web_home }}/{{ item.name }}/{{ item.nginx_site_setup_site_subfolder_used_to_serve_files }}"
+        path: "{{ nginx_site_setup_web_home }}/{{ item.name }}/{{ item.site_subfolder_used_to_serve_files | default( nginx_site_setup_site_subfolder_used_to_serve_files ) }}"
         state: directory 
         owner: "{{ item.name }}" 
         group: "{{ nginx_site_setup_web_group }}" 
@@ -86,7 +86,7 @@
 
     - name: "Create www directory and set {{ nginx_site_setup_web_group }} as default group for all new directories"
       file: 
-        path: "{{ nginx_site_setup_web_home }}/{{ item.name }}/{{ item.nginx_site_setup_site_subfolder_used_to_serve_files }}"
+        path: "{{ nginx_site_setup_web_home }}/{{ item.name }}/{{ item.site_subfolder_used_to_serve_files | default( nginx_site_setup_site_subfolder_used_to_serve_files ) }}"
         state: directory 
         owner: "{{ nginx_site_setup_web_user }}"
         group: "{{ nginx_site_setup_web_group }}" 
@@ -119,3 +119,4 @@
     name: nginx 
     state: restarted 
     enabled: yes  
+  

@@ -7,7 +7,13 @@ nginx_site_setup_sites_to_set_up:
       url: 'mysite.com',
       name: 'mysite',
       https: true,
-      nginx_site_setup_site_subfolder_used_to_serve_files: "current/build/html"
+      site_subfolder_used_to_serve_files: "current/build/html",
+      restrict_site_to_certain_ip_addresses: true,
+      ip_addresses_or_cidr_ranges_to_allow_or_deny: [
+        "allow 1.2.3.4;",
+        "allow 192.168.1.0/24",
+        "deny all;"
+      ]      
     }
 
 #####     Optional Variables      #####
@@ -37,9 +43,11 @@ nginx_site_setup_sites_to_set_up:
 # Should the site only be viewable on an intranet, certain IP addresses, or block any IP addresses?
 #nginx_site_setup_restrict_site_to_certain_ip_addresses: false
 
-# The rules are processed in sequence, from top to bottom
+# The rules are processed in sequence, from top to bottom.
+# This would only be used as an item in the nginx_site_setup_sites_to_set_up list.
 #nginx_site_setup_ip_addresses_or_cidr_ranges_to_allow_or_deny: [
 #  "allow 1.2.3.4;",
 #  "allow 192.168.1.0/24",
 #  "deny all;"
 #]
+
