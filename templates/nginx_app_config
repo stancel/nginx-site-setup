@@ -2,7 +2,7 @@ server {
   listen 80;
 
   # Section to restrict this site to be viewable only by certain IP addresses 
-  {% if item.restrict_site_to_certain_ip_addresses %} 
+  {% if item.restrict_site_to_certain_ip_addresses is defined and item.restrict_site_to_certain_ip_addresses is sameas true %} 
   {% for addresses in item.ip_addresses_or_cidr_ranges_to_allow_or_deny %}
   {{ addresses }}
   {% endfor %}
