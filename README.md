@@ -71,6 +71,12 @@ Should the site only be viewable on an intranet, certain IP addresses, or block 
 	nginx_site_setup_restrict_site_to_certain_ip_addresses: false
 ```
 
+The PHP Version you are using with Nginx. The default value is "8.1"
+
+```
+	nginx_site_php_version: "8.1"
+```
+
 The rules are processed in sequence, from top to bottom.  
 
 ``` 
