@@ -119,8 +119,9 @@
     state: started 
     enabled: yes  
 
-- name: "Restart NginX to make sure new configuration is active"
-  service:
-    name: nginx 
-    state: restarted 
-    enabled: yes  
+# DO NOT RESTART NGINX UNTIL AFTER stancel.install_certbot_ssl_certs has run
+#- name: "Restart NginX to make sure new configuration is active"
+#  service:
+#    name: nginx 
+#    state: restarted 
+#    enabled: yes  
