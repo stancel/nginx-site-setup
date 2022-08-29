@@ -113,11 +113,11 @@
 #  changed_when: "chmod_result.stdout != \"\""
 #  with_items: '{{ nginx_site_setup_sites_to_set_up }}'
 
-- name: "Ensure NginX service is up"
-  service:
-    name: nginx 
-    state: started 
-    enabled: yes  
+#- name: "Ensure NginX service is up"
+#  service:
+#    name: nginx 
+#    state: started 
+#    enabled: yes  
 
 # DO NOT RESTART NGINX UNTIL AFTER stancel.install_certbot_ssl_certs has run
 #- name: "Restart NginX to make sure new configuration is active"

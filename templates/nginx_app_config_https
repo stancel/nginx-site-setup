@@ -32,7 +32,9 @@ server {
 
   server_name {{ item.url }} www.{{ item.url }};
 
-  {% if item.site_subfolder_used_to_serve_files is defined %}
+  {% if item.site_subfolder_used_to_serve_files is defined and item.site_subfolder_used_to_serve_files == '' %}
+    root /var/www/html
+  {% elif item.site_subfolder_used_to_serve_files is defined %}
     root /var/www/{{ item.name }}/{{ item.site_subfolder_used_to_serve_files }};
   {% else %}
     root /var/www/{{ item.name }}/{{ nginx_site_setup_site_subfolder_used_to_serve_files }};
@@ -104,7 +106,9 @@ server {
   error_page 500 502 503 504 /50x.html;
 
   location = /50x.html {
-  {% if item.site_subfolder_used_to_serve_files is defined %}
+  {% if item.site_subfolder_used_to_serve_files is defined and item.site_subfolder_used_to_serve_files == '' %}
+    root /var/www/html
+  {% elif item.site_subfolder_used_to_serve_files is defined %}
     root /var/www/{{ item.name }}/{{ item.site_subfolder_used_to_serve_files }};
   {% else %}
     root /var/www/{{ item.name }}/{{ nginx_site_setup_site_subfolder_used_to_serve_files }};
